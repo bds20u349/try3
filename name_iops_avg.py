@@ -33,30 +33,40 @@ def Checking_the_file_name(file_name): #проверка на соответст
     else:
         return False
 
+def File_name_sorting_function(file_name): #проверка на соответствие имени файла шалону вида "fio-*-*.log"
+    if not(Checking_the_file_name(file_name)):
+        return 0
+    x = file_name[4:].find('-')+4 #Ищем индекс второго знака "-" между подстроками "fio-" и ".log"
+    namber_1 = int(file_name[4:x])
+    namber_2 = int(file_name[x+1:-4])
+    return (namber_1*1000+namber_2)
+
 def Output(file_name):
     file = open(file_name, 'r')
-    a = True
+    a = True #флаг нахождения последнего, интересуещего нас значения
     try:
         while a:
-            line = file.readline()
+            line = file.readline() #считали строку
     
-            x = line.find("filename")
+            x = line.find("filename") #если в строке есть кодовое слово "filename", то найдём в ней имя диска
             if x != -1:
-                name = Reading_the_necessary_information(line, x+14, 'str')
+                name = Reading_the_necessary_information(line, x+14, 'str') #x - позиция первого символа в слова "filename". Делаем отступ на 14 символов, т.к. это подстрока "filename=/dev/", которая нас не интересует
             
-            x = line.find("IOPS")
+            x = line.find("IOPS") #если в строке есть кодовое слово "IOPS", то найдём в ней IOPS
             if x != -1:
-                iops = Reading_the_necessary_information(line, x+5, 'float')
+                iops = Reading_the_necessary_information(line, x+5, 'float') #x - позиция первого символа в слова "IOPS". Делаем отступ на 5 символов, т.к. это подстрока "IOPS=", которая нас не интересует
                 
-            x = line.find(" lat")
+            x = line.find(" lat") #если в строке есть кодовое слово " lat", то найдём в ней avg
             if x != -1:
-                if line.find("usec") != -1:
+                if line.find("usec") != -1: #отпределяем размерность avg
                     mnogitel = 1000
                 else:
                     mnogitel = 1
-                avg = Reading_the_necessary_information(line, line.find('avg')+4, 'float')/mnogitel
+                avg = Reading_the_necessary_information(line, line.find('avg')+4, 'float')/mnogitel #Делаем отступ на 4 символов, т.к. это подстрока "avg=", которая нас не интересует
+                
                 a = False
         return name, iops, avg
     finally:
        file.close()
 
+#print(File_name_sorting_function('fio-2-1.log'))
