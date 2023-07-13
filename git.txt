@@ -1,0 +1,52 @@
+git init #инициализация папки git
+
+git config --global user.name "<>" #настройка имении 
+git config --global user.email <> #настройка почты
+
+git add <.> #добавить папку/файл (сохранить изменения в папке/файле)
+
+git config --list #посмотреть config
+
+git status #вывести статусgit branch -M main
+
+git commit -a -m"<>" #создать коммит
+
+--------------Первая выгрузка commit в github----------------
+git remote add origin https://github.com/bds20u349/try3.git
+git branch -M main #переименование ветки Master в main
+git push -u origin main #выгрузить git в github
+-------------------------------------------------------------
+
+git push #выгрузить git в github
+
+git clone <https://github.com/bds20u349/try3.git> #скопировать репозиторий
+
+git fetch #сохранить изменения из githib в git-папку
+
+git pull #Включает изменения из удаленного репозитория в текущую ветку
+
+git rm --cached <file> #прекращение отслеживания файла
+
+git log #история комитов (если зависло и не даёт ничего напечатать нажми/введи q)
+
+git log --name-status #показывает, что было добавлено в каждом коммите
+
+git ls-tree -r <название ветки> --name-only #показывает, что отслеживает git
+
+git checkout <revision/название ветки> . #Откат к коммиту/переход на другую ветку, где [revision] - хэш коммита (например: 12345678901234567890123456789012345678ab).Не забудьте . в конце, это очень важно. Это применит изменения ко всему дереву. Не переписывает историю
+
+git reset --hard commit_sha #для отката к определенному коммиту
+
+git branch <Название ветки> #создать ветку
+
+git branch -v #посмотреть все ветки
+
+git merge <имя ветки> #соединяет ветку, в которой находишься с указанной
+
+git mergetool #соединяет ветки при помощи установленной утилиты
+
+http://kdiff3.sourceforge.net/ #откуда качать утилиту
+
+git config --global merge.tool kdiff3 #настроить kdiff3 как инструмент для mergetool
+
+git config --global mergetool.kdiff3.cmd '"<W:\\Program Files\\KDiff3\\kdiff3>" $BASE $LOCAL $REMOTE -o $MERGED' #прописываем путь к утилите

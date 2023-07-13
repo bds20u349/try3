@@ -18,7 +18,7 @@ config_file.close() #закрываем файл
 name_of_the_folder_with_tests = name_of_the_folder_with_tests.replace('\\', '/') #заменяем системные знаки \ на / в пути к папке с тестами
 name_of_the_folder_with_excel = name_of_the_folder_with_excel.replace('\\', '/') #заменяем системные знаки \ на / в пути к папке с excel
 folder_name = input('введите имя папки с тестами: ') #rw6d4-16kstrip1800slong
-excel_name = input('введите имя файла excel: ') #test.xlsx
+excel_name = input('введите имя файла excel: ') + '.xlsx' #test.xlsx
 name_of_the_folder_with_tests = name_of_the_folder_with_tests + '/' + folder_name #Получаем общий путь внутрь каталога с тестами
 name_of_the_folder_with_excel = name_of_the_folder_with_excel + '/' + excel_name #Получаем общий путь к файлу excel
 catalog_with_tests = os.listdir(name_of_the_folder_with_tests) #получаем список названий всех файлов внутри каталога

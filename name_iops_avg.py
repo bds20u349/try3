@@ -58,7 +58,9 @@ def Output(file_name):
                 
             x = line.find(" lat") #если в строке есть кодовое слово " lat", то найдём в ней avg
             if x != -1:
-                if line.find("usec") != -1: #отпределяем размерность avg
+                if line.find("nsec") != -1: #отпределяем размерность avg
+                    mnogitel = 1000000
+                elif line.find("usec") != -1: #отпределяем размерность avg
                     mnogitel = 1000
                 else:
                     mnogitel = 1
