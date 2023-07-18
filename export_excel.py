@@ -1,6 +1,7 @@
 from openpyxl import load_workbook
 
 def ExportExcel(ws, name, iops, avg):
+    max_row = 1
     row = 1 #начинаем с верхней, левой ячейки
     col = 1
     a = True
@@ -20,4 +21,6 @@ def ExportExcel(ws, name, iops, avg):
 
             ws.cell(row = row, column = col).value = iops
             ws.cell(row = row, column = col+1).value = avg
+            max_row = row
             a = False
+    return max_row

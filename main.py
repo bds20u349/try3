@@ -3,6 +3,9 @@ from name_iops_avg import Checking_the_file_name
 from name_iops_avg import File_name_sorting_function
 from export_excel import ExportExcel
 from openpyxl import load_workbook
+from openpyxl import Workbook
+from openpyxl.chart import ScatterChart, Series, Reference
+
 import os
 
 #-------------------Открываем файл и считываем оттуда пути к папкам с тестами и папке с excel----------------------------------------------------
@@ -18,7 +21,7 @@ config_file.close() #закрываем файл
 name_of_the_folder_with_tests = name_of_the_folder_with_tests.replace('\\', '/') #заменяем системные знаки \ на / в пути к папке с тестами
 name_of_the_folder_with_excel = name_of_the_folder_with_excel.replace('\\', '/') #заменяем системные знаки \ на / в пути к папке с excel
 folder_name = input('введите имя папки с тестами: ') #rw6d4-16kstrip1800slong
-excel_name = input('введите имя файла excel: ') + '.xlsx' #test.xlsx
+excel_name = input('введите имя файла excel: ') + '.xlsx' #test
 name_of_the_folder_with_tests = name_of_the_folder_with_tests + '/' + folder_name #Получаем общий путь внутрь каталога с тестами
 name_of_the_folder_with_excel = name_of_the_folder_with_excel + '/' + excel_name #Получаем общий путь к файлу excel
 catalog_with_tests = os.listdir(name_of_the_folder_with_tests) #получаем список названий всех файлов внутри каталога
@@ -35,6 +38,28 @@ ws = wb.create_sheet(folder_name) #создаём новый лист
 for file_name in catalog_with_tests: #берём по очереди все файлы с тестами
     if Checking_the_file_name(file_name): #проверка на соответствие имени файла шаблону вида "fio-*-*.log"
         name, iops, avg = Output(name_of_the_folder_with_tests + '/' + file_name) #Получение из файла с результатом теста имени тестируемого диска, отправленных iops и результата evg
-        ExportExcel(ws, name, iops, avg) #записываем данные в excel
+        max_row = ExportExcel(ws, name, iops, avg) #записываем данные в excel
+
+#-------------------------------------------------------------------------------
+row, col = 1, 1
+ch1 = ScatterChart()
+i = 0
+while(ws.cell(row = row, column = col).value != None):
+    xvalues = Reference(ws, min_col=col,  max_col=col, min_row=3, max_row=max_row)
+    values = Reference(ws, min_col=col+1, max_col=col+1, min_row=2, max_row=max_row)
+    series = Series(values, xvalues, title_from_data=True)
+    series.marker.size = 5
+    series.marker.symbol = "diamond"
+    # добавляем данные в объект диаграммы
+    ch1.series.append(series)
+    col += 2
+
+
+ch1.title = folder_name
+ch1.x_axis.title = 'I/Os per Second'
+ch1.y_axis.title = 'Response (msec)'
+
+ws.add_chart(ch1, "A" + str(max_row+1))
+
 wb.save(name_of_the_folder_with_excel) #сохраняем изменения в лист excel
 wb.close() #закрываем лист excel
