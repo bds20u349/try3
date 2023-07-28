@@ -9,7 +9,7 @@ def Output_from_out_top(file_name):
     clovar = {'time': 0,'load avg 1min': 0,'load avg 5min': 0,'load avg 15min': 0,'сумма всех %CPU': 0,'IO wait': 0}      
     try:
         while a:
-            clovar.fromkeys(clovar, 0)
+            clovar = dict.fromkeys(clovar)
             summa_spu = 0 #сумма CPU
             line = file.readline() #считали строку
             m = re.search('\d\d[:]\d\d[:]\d\d', line) #находим время
@@ -33,9 +33,11 @@ def Output_from_out_top(file_name):
             #считываем информацию о работе каждого PID
             while(line!= '\n') and (line):
                 stroka = line.split()
-                pid, cpu = stroka[0], stroka[8]
+                cpu = stroka[8]
+                PID = stroka[0]
+                COMMAND = " ".join(stroka[11:])
                 summa_spu += float(cpu)
-                clovar['PID № ' + str(pid)] = cpu
+                clovar[str(PID) + ' ' + COMMAND] = cpu
                 line = file.readline()
             clovar['сумма всех %CPU'] = summa_spu
             massiv.append(clovar.copy())
