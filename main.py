@@ -42,24 +42,21 @@ for file_name in catalog_with_tests: #берём по очереди все фа
 
 #-------------------------------------------------------------------------------
 row, col = 1, 1
-ch1 = ScatterChart()
-i = 0
 while(ws.cell(row = row, column = col).value != None):
+    ch = ScatterChart()
     xvalues = Reference(ws, min_col=col,  max_col=col, min_row=3, max_row=max_row)
     values = Reference(ws, min_col=col+1, max_col=col+1, min_row=2, max_row=max_row)
     series = Series(values, xvalues, title_from_data=True)
     series.marker.size = 5
     series.marker.symbol = "diamond"
     # добавляем данные в объект диаграммы
-    ch1.series.append(series)
+    ch.series.append(series)
+    ch.title = folder_name + '(' + str(ws.cell(row = 1, column = col).value) + ')'
+    ch.x_axis.title = 'I/Os per Second'
+    ch.y_axis.title = 'Response (msec)'
+
+    ws.add_chart(ch, "A" + str(max_row+col*7-5))
     col += 2
-
-
-ch1.title = folder_name
-ch1.x_axis.title = 'I/Os per Second'
-ch1.y_axis.title = 'Response (msec)'
-
-ws.add_chart(ch1, "A" + str(max_row+1))
 
 wb.save(name_of_the_folder_with_excel) #сохраняем изменения в лист excel
 wb.close() #закрываем лист excel
